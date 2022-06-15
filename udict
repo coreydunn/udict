@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Assure system can run correct commands
+# Ensure system can run correct commands
 function checkdependencies()
 {
 
@@ -19,7 +19,7 @@ function main()
 		return 1
 	fi
 
-	checkdependencies foobar curl jq && \
+	checkdependencies curl jq && \
 		for x in $*; do
 			echo "$x:"
 			curl "https://api.urbandictionary.com/v0/define?term='$x'" 2>/dev/null|jq '.list[]|.definition'|nl
