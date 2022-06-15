@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Assure system can run correct commands
+function checkdependencies()
+{
+
+	for x in $*; do
+		if ! which $x 2>&1 >/dev/null; then
+			echo "error: cannot find $x"
+			return 1
+		fi
+	done
+}
+
+function main()
+{
+	if [ $# = 0 ]; then
+		echo 'usage: udict TERM'
+		return 1
+	fi
+
+	checkdependencies foobar curl jq && \
+		for x in $*; do
+			echo "$x:"
+			curl "https://api.urbandictionary.com/v0/define?term='$x'" 2>/dev/null|jq '.list[]|.definition'|nl
+		done || return 2
+}
+
+main $*
